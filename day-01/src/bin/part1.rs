@@ -5,16 +5,12 @@ fn main() {
 }
 
 fn part1(input: &str) -> i32 {
-    let number_list: String = input
+    let number_list: i32 = input
         .chars()
         .filter(|c| c.is_numeric() || c.eq(&'\n'))
-        .collect::<String>();
-    let mut number_list: Vec<&str> = number_list.split("\n").collect();
-    number_list.pop();
-
-    let number_list: i32 = number_list
-        .into_iter()
-        .map(|value| {
+        .collect::<String>()
+        .split_terminator('\n')
+        .map(|value: &str| {
             (value.chars().nth(0).unwrap().to_string()
                 + &value.chars().nth(value.len() - 1).unwrap().to_string())
                 .parse::<i32>()
@@ -23,7 +19,6 @@ fn part1(input: &str) -> i32 {
         .sum();
     number_list
 }
-//test
 
 #[cfg(test)]
 mod tests {
