@@ -4,12 +4,11 @@ fn main() {
     dbg!(output);
 }
 
-fn part2(input: &str) -> i32 {
+fn part2(input: &str) -> u32 {
     input
         .split_terminator('\n')
         .map(|entry| {
-            let mut value = String::from(entry);
-            value = value
+            entry
                 .replace("one", "o1e")
                 .replace("two", "t2o")
                 .replace("three", "t3e")
@@ -18,19 +17,22 @@ fn part2(input: &str) -> i32 {
                 .replace("six", "s6x")
                 .replace("seven", "s7n")
                 .replace("eight", "e8t")
-                .replace("nine", "n9e");
-            value + "\n"
+                .replace("nine", "n9e")
         })
-        .collect::<String>()
-        .chars()
-        .filter(|c| c.is_numeric() || c.eq(&'\n'))
-        .collect::<String>()
-        .split_terminator('\n')
-        .map(|value: &str| {
-            (value.chars().nth(0).unwrap().to_string()
-                + &value.chars().nth(value.len() - 1).unwrap().to_string())
-                .parse::<i32>()
-                .unwrap()
+        .filter_map(|entry| {
+            let mut start = 0;
+            let mut end = 0;
+            for c in entry.chars() {
+                if c.is_numeric() {
+                    if start == 0 {
+                        start = c.to_digit(10).unwrap() * 10;
+                        end = c.to_digit(10).unwrap();
+                    } else {
+                        end = c.to_digit(10).unwrap();
+                    }
+                }
+            }
+            Some(start + end)
         })
         .sum()
 }
