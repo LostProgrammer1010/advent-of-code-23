@@ -5,35 +5,34 @@ fn main() {
 }
 
 fn part2(input: &str) -> i32 {
-    let input = input
+    input
         .split_terminator('\n')
-        .map(|value| {
-            let value = value.replace("one", "1");
-            let value = value.replace("two", "2");
-            let value = value.replace("three", "3");
-            let value = value.replace("four", "4");
-            let value = value.replace("five", "5");
-            let value = value.replace("six", "6");
-            let value = value.replace("seven", "7");
-            let value = value.replace("eight", "8");
-            let value = value.replace("nine", "9");
-            value
-        })
         .map(|entry| {
-            entry
-                .chars()
-                .filter(|c| c.is_numeric() || c.eq(&'\n'))
-                .collect::<String>()
+            let mut value = String::from(entry);
+            value = value
+                .replace("one", "o1e")
+                .replace("two", "t2o")
+                .replace("three", "t3e")
+                .replace("four", "f4r")
+                .replace("five", "f5e")
+                .replace("six", "s6x")
+                .replace("seven", "s7n")
+                .replace("eight", "e8t")
+                .replace("nine", "n9e");
+            value + "\n"
         })
-        .map(|value| {
+        .collect::<String>()
+        .chars()
+        .filter(|c| c.is_numeric() || c.eq(&'\n'))
+        .collect::<String>()
+        .split_terminator('\n')
+        .map(|value: &str| {
             (value.chars().nth(0).unwrap().to_string()
                 + &value.chars().nth(value.len() - 1).unwrap().to_string())
                 .parse::<i32>()
                 .unwrap()
         })
-        .collect::<Vec<_>>();
-    println!("{:?}", input);
-    0
+        .sum()
 }
 
 #[cfg(test)]
